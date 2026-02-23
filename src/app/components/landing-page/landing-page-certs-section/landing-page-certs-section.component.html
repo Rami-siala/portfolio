@@ -1,0 +1,81 @@
+<section class="relative pt-8 h-full flex items-center bg-white overflow-hidden">
+  <!-- Background -->
+  <div class="absolute inset-0 pointer-events-none">
+    <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-indigo-200 to-transparent"></div>
+    <div class="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-indigo-50 opacity-50 translate-x-1/3 translate-y-1/3"></div>
+  </div>
+
+  <!-- Section name -->
+  <div class="absolute top-6 left-8 text-[11px] font-mono font-semibold text-slate-300 uppercase tracking-[0.2em]">04 / Certifications</div>
+
+  <div class="relative z-10 mx-auto max-w-6xl px-6 lg:px-8 w-full">
+    <!-- Section header -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center gap-2 rounded-full bg-amber-50 border border-amber-100 px-4 py-1.5 mb-3">
+        <svg class="h-4 w-4 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 15l-2 5l-1-3l-3-1l5-2z"/>
+          <path d="M12 15l2 5l1-3l3-1l-5-2z"/>
+          <circle cx="12" cy="8" r="6"/>
+        </svg>
+        <span class="text-sm font-medium text-amber-700">Achievements</span>
+      </div>
+      <h2 class="text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
+        Certifications & <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-500">Credentials</span>
+      </h2>
+      <p class="mt-2 text-base text-slate-500 max-w-2xl mx-auto">
+        Recognized qualifications that validate my expertise.
+      </p>
+    </div>
+
+    <!-- Certs grid -->
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto">
+      @for (cert of certs; track cert.data.title) {
+        <div class="group relative rounded-2xl bg-white border border-slate-200 overflow-hidden transition-all duration-500 hover:shadow-xl hover:shadow-indigo-50 hover:border-indigo-200 hover:-translate-y-1 bg-gradient-to-br from-slate-50 to-indigo-50/90">
+          <!-- Image thumbnail -->
+          <div class="relative h-36 overflow-hidden bg-slate-50">
+            <img
+              [src]="cert.data.imagePath"
+              [alt]="cert.data.title"
+              class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+            />
+            <!-- Overlay gradient -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </div>
+
+          <!-- Content -->
+          <div class="p-4">
+            <!-- Title & issuer -->
+            <h3 class="text-sm font-bold text-slate-900 mb-1 leading-snug group-hover:text-indigo-600 transition-colors">
+              {{ cert.data.title }}
+            </h3>
+            <p class="text-xs text-slate-500 mb-3">{{ cert.data.issuer }} &middot; {{ cert.data.issueDate }}</p>
+
+            <!-- Skills -->
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              @for (skill of cert.data.skills; track skill) {
+                <span class="rounded-full px-2 py-0.5 text-[11px] font-medium border"
+                  [class]="cert.ui.color === 'amber' ? 'bg-amber-50 text-amber-700 border-amber-200'
+                    : cert.ui.color === 'blue' ? 'bg-blue-50 text-blue-700 border-blue-200'
+                    : cert.ui.color === 'indigo' ? 'bg-indigo-50 text-indigo-700 border-indigo-200'
+                    : cert.ui.color === 'violet' ? 'bg-violet-50 text-violet-700 border-violet-200'
+                    : 'bg-emerald-50 text-emerald-700 border-emerald-200'"
+                >{{ skill }}</span>
+              }
+            </div>
+
+            <!-- More details link -->
+            <a
+              [routerLink]="['/cert', cert.data.slug]"
+              class="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-700 transition-all duration-200 hover:gap-2.5"
+            >
+              More Details
+              <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14m-7-7l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

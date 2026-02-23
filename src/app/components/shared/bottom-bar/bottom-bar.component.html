@@ -1,0 +1,18 @@
+<div class="fixed bottom-0 left-0 right-0 z-50 h-8 bg-slate-100 backdrop-blur-sm border-t border-slate-200 flex items-center justify-between px-6">
+  <span class="text-[10px] font-mono text-slate-500">
+    &copy; {{ currentYear }} {{ profile.data.name }}
+  </span>
+  <div class="flex items-center gap-4">
+    @for (social of profile.data.socials; track social.label) {
+      <a
+        [href]="social.url"
+        [target]="social.url.startsWith('mailto:') ? '_self' : '_blank'"
+        [rel]="social.url.startsWith('mailto:') ? '' : 'noopener noreferrer'"
+        class="text-slate-700 hover:text-indigo-600 transition-colors"
+        [attr.aria-label]="social.label"
+      >
+        <div class="h-3 w-3 [&>svg]:h-full [&>svg]:w-full" [innerHTML]="safeIcon(social.icon)"></div>
+      </a>
+    }
+  </div>
+</div>

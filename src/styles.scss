@@ -1,0 +1,61 @@
+/* You can add global styles to this file, and also import other style files */
+
+@use 'tailwindcss';
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    direction: rtl;
+    scrollbar-width: thin;
+    scrollbar-color: #94a3b8 transparent;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #94a3b8;
+      border-radius: 4px;
+    }
+  }
+
+  body {
+    direction: ltr;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  ::selection {
+    background-color: rgba(99, 102, 241, 0.2);
+    color: #312e81;
+  }
+}
+
+/* Scrollbar: thin + styled, left-side via direction trick */
+.scrollbar-left {
+  direction: rtl;
+  scrollbar-width: thin;
+  scrollbar-color: #94a3b8 transparent;
+
+  & > * {
+    direction: ltr;
+  }
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #94a3b8;
+    border-radius: 4px;
+  }
+}

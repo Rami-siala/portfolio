@@ -1,0 +1,60 @@
+<!-- Navigation -->
+<app-landing-page-menu [activeSection]="activeSectionName()" (navigateTo)="navigateToSection($event)" />
+
+<!-- Vertical tab navigation (right side) -->
+<div class="fixed right-0 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col gap-2">
+  @for (section of sections; track section; let i = $index) {
+    <button
+      (click)="navigateToSection(section)"
+      class="group flex items-center justify-end cursor-pointer"
+    >
+      <div
+        class="flex items-center gap-2 w-[115px] pl-4 pr-5 py-2.5 rounded-l-xl border border-r-0 transition-all duration-400"
+        [class]="currentSection() === i
+          ? 'bg-indigo-600 border-indigo-600 translate-x-0 shadow-lg shadow-indigo-200'
+          : 'bg-white border-slate-200 translate-x-[114px] group-hover:translate-x-[40px] shadow-md'"
+      >
+        <!-- Section number -->
+        <span
+          class="text-xs font-mono font-bold min-w-[1rem] text-center"
+          [class]="currentSection() === i ? 'text-indigo-200' : 'text-slate-400'"
+        >
+          {{ (i + 1).toString().padStart(2, '0') }}
+        </span>
+        <!-- Section label -->
+        <span
+          class="text-sm font-semibold capitalize whitespace-nowrap"
+          [class]="currentSection() === i ? 'text-white' : 'text-slate-700'"
+        >
+          {{ section }}
+        </span>
+      </div>
+
+      <!-- Number circle: visible when inactive & not hovered -->
+      @if (currentSection() !== i) {
+        <div class="nav-circle flex h-8 w-8 items-center justify-center rounded-full bg-white border border-slate-200 shadow-sm mr-2">
+          <span class="text-xs font-mono font-bold text-slate-400">{{ i + 1 }}</span>
+        </div>
+      }
+    </button>
+  }
+</div>
+
+<!-- Scroll container -->
+<main #scrollContainer class="scroll-container scrollbar-left">
+  <div id="home" class="scroll-section">
+    <app-landing-page-hero-section />
+  </div>
+  <div id="projects" class="scroll-section">
+    <app-landing-page-projects-section />
+  </div>
+  <div id="skills" class="scroll-section">
+    <app-landing-page-skills-section />
+  </div>
+  <div id="certs" class="scroll-section">
+    <app-landing-page-certs-section />
+  </div>
+  <div id="footer" class="scroll-section !snap-end !min-h-0">
+    <app-landing-page-footer-section (navigateTo)="navigateToSection($event)" />
+  </div>
+</main>

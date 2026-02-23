@@ -1,0 +1,10 @@
+:host {
+  display: block;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.cert-scroll-container {
+  height: calc(100vh - 2rem); /* above the 32px bottom bar */
+  overflow-y: auto;
+}

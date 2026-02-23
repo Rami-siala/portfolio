@@ -1,0 +1,236 @@
+<div class="cert-scroll-container scrollbar-left">
+@if (cert(); as c) {
+  <div class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50">
+    <!-- Top nav bar -->
+    <div class="sticky top-0 z-20 bg-white/80 backdrop-blur-md border-b border-slate-200">
+      <div class="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
+        <a routerLink="/" [queryParams]="{ section: 'certs' }" class="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5m7-7l-7 7 7 7"/>
+          </svg>
+          Back to Portfolio
+        </a>
+        <div class="flex items-center gap-3">
+          <span class="text-[11px] font-mono font-semibold text-slate-300 uppercase tracking-[0.2em]">Certificate Details</span>
+          <a routerLink="/" class="relative group">
+            <div class="absolute -inset-1 rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 opacity-0 group-hover:opacity-30 transition-opacity"></div>
+            <img
+              [src]="profile.data.profilePhoto"
+              [alt]="profile.data.name"
+              class="relative h-16 w-16 rounded-full object-cover ring-2 ring-white shadow-md"
+            />
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-6 py-10">
+      <!-- Header -->
+      <div class="mb-8">
+        <div class="inline-flex items-center gap-2 rounded-full px-3 py-1 mb-4 border text-xs font-medium"
+          [class]="c.ui.color === 'amber' ? 'bg-amber-50 text-amber-700 border-amber-200'
+            : c.ui.color === 'blue' ? 'bg-blue-50 text-blue-700 border-blue-200'
+            : c.ui.color === 'indigo' ? 'bg-indigo-50 text-indigo-700 border-indigo-200'
+            : c.ui.color === 'violet' ? 'bg-violet-50 text-violet-700 border-violet-200'
+            : 'bg-emerald-50 text-emerald-700 border-emerald-200'"
+        >
+          <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 15l-2 5l-1-3l-3-1l5-2z"/>
+            <path d="M12 15l2 5l1-3l3-1l-5-2z"/>
+            <circle cx="12" cy="8" r="6"/>
+          </svg>
+          {{ c.data.issuer }}
+        </div>
+        <h1 class="text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight mb-2">
+          {{ c.data.title }}
+        </h1>
+        @if (c.data.abbreviation) {
+          <span class="text-lg font-mono font-semibold text-slate-400">{{ c.data.abbreviation }}</span>
+        }
+      </div>
+
+      <!-- Main content: image + details side by side -->
+      <div class="grid lg:grid-cols-[1.4fr_1fr] gap-8 items-start">
+
+        <!-- Certificate image -->
+        <div class="relative group">
+          <div
+            class="rounded-2xl overflow-hidden border border-slate-200 shadow-lg bg-white cursor-pointer transition-all duration-500"
+            [class.fixed]="imageZoomed()"
+            [class.inset-0]="imageZoomed()"
+            [class.z-50]="imageZoomed()"
+            [class.m-6]="imageZoomed()"
+            [class.rounded-2xl]="imageZoomed()"
+            (click)="toggleZoom()"
+          >
+            <img
+              [src]="c.data.imagePath"
+              [alt]="c.data.title"
+              class="w-full transition-all duration-500"
+              [class]="imageZoomed() ? 'h-full object-contain p-4 bg-slate-900/95' : 'h-auto object-cover'"
+            />
+          </div>
+          <!-- Zoom hint -->
+          @if (!imageZoomed()) {
+            <div class="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-lg bg-black/60 backdrop-blur-sm px-2.5 py-1.5 text-[11px] text-white font-medium opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+              <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="M21 21l-4.35-4.35"/>
+                <path d="M11 8v6m-3-3h6"/>
+              </svg>
+              Click to enlarge
+            </div>
+          }
+        </div>
+
+        <!-- Details panel -->
+        <div class="space-y-5">
+          <!-- Info cards -->
+          <div class="grid grid-cols-2 gap-3">
+            <div class="rounded-xl bg-white border border-slate-200 p-4">
+              <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-1">Issued</p>
+              <p class="text-sm font-bold text-slate-800">{{ c.data.issueDate }}</p>
+            </div>
+            @if (c.data.certificateId) {
+              <div class="rounded-xl bg-white border border-slate-200 p-4">
+                <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-1">Certificate ID</p>
+                <p class="text-xs font-mono font-bold text-slate-800 truncate">{{ c.data.certificateId }}</p>
+              </div>
+            }
+            @if (c.data.courseHours) {
+              <div class="rounded-xl bg-white border border-slate-200 p-4">
+                <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-1">Course Hours</p>
+                <p class="text-sm font-bold text-slate-800">{{ c.data.courseHours }}</p>
+              </div>
+            }
+            <div class="rounded-xl bg-white border border-slate-200 p-4">
+              <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-1">Recipient</p>
+              <p class="text-sm font-bold text-slate-800">{{ c.data.recipientName }}</p>
+            </div>
+          </div>
+
+          <!-- Skills -->
+          <div class="rounded-xl bg-white border border-slate-200 p-4">
+            <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-3">Key Skills</p>
+            <div class="flex flex-wrap gap-2">
+              @for (skill of c.data.skills; track skill) {
+                <span class="rounded-full px-3 py-1 text-xs font-medium border"
+                  [class]="c.ui.color === 'amber' ? 'bg-amber-50 text-amber-700 border-amber-200'
+                    : c.ui.color === 'blue' ? 'bg-blue-50 text-blue-700 border-blue-200'
+                    : c.ui.color === 'indigo' ? 'bg-indigo-50 text-indigo-700 border-indigo-200'
+                    : c.ui.color === 'violet' ? 'bg-violet-50 text-violet-700 border-violet-200'
+                    : 'bg-emerald-50 text-emerald-700 border-emerald-200'"
+                >{{ skill }}</span>
+              }
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex flex-wrap gap-3">
+            @if (c.data.verificationUrl) {
+              <a
+                [href]="c.data.verificationUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-200 transition-all duration-300 hover:bg-indigo-700 hover:-translate-y-0.5"
+              >
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                  <polyline points="15 3 21 3 21 9"/>
+                  <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+                Verify Credential
+              </a>
+            }
+            @if (c.data.pdfPath) {
+              <a
+                [href]="c.data.pdfPath"
+                target="_blank"
+                class="inline-flex items-center gap-2 rounded-xl border-2 border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition-all duration-300 hover:border-indigo-300 hover:text-indigo-600 hover:-translate-y-0.5"
+              >
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="12" y1="18" x2="12" y2="12"/>
+                  <line x1="9" y1="15" x2="15" y2="15"/>
+                </svg>
+                View PDF
+              </a>
+            }
+          </div>
+
+          <!-- Issuer info -->
+          @if (c.data.issuerWebsite || c.data.issuerEmail) {
+            <div class="rounded-xl bg-white border border-slate-200 p-4">
+              <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold mb-3">Issuing Organization</p>
+              <p class="text-sm font-bold text-slate-800 mb-1">{{ c.data.issuer }}</p>
+              @if (c.data.issuerWebsite) {
+                <p class="text-xs text-slate-500">
+                  <span class="text-slate-400">Web:</span>
+                  <a [href]="'https://' + c.data.issuerWebsite" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:underline ml-1">{{ c.data.issuerWebsite }}</a>
+                </p>
+              }
+              @if (c.data.issuerEmail) {
+                <p class="text-xs text-slate-500 mt-0.5">
+                  <span class="text-slate-400">Email:</span>
+                  <a [href]="'mailto:' + c.data.issuerEmail" class="text-indigo-600 hover:underline ml-1">{{ c.data.issuerEmail }}</a>
+                </p>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Navigation between certs -->
+      <div class="mt-12 pt-8 border-t border-slate-200">
+        <div class="flex items-center justify-between">
+          @if (adjacentCerts().prev; as prev) {
+            <a
+              [routerLink]="['/cert', prev.data.slug]"
+              class="group inline-flex items-center gap-3 text-sm text-slate-500 hover:text-indigo-600 transition-colors"
+            >
+              <svg class="h-5 w-5 transition-transform group-hover:-translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5m7-7l-7 7 7 7"/>
+              </svg>
+              <div>
+                <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Previous</p>
+                <p class="font-semibold text-slate-700 group-hover:text-indigo-600 transition-colors">{{ prev.data.title }}</p>
+              </div>
+            </a>
+          } @else {
+            <div></div>
+          }
+          @if (adjacentCerts().next; as next) {
+            <a
+              [routerLink]="['/cert', next.data.slug]"
+              class="group inline-flex items-center gap-3 text-sm text-slate-500 hover:text-indigo-600 transition-colors text-right"
+            >
+              <div>
+                <p class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Next</p>
+                <p class="font-semibold text-slate-700 group-hover:text-indigo-600 transition-colors">{{ next.data.title }}</p>
+              </div>
+              <svg class="h-5 w-5 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14m-7-7l7 7-7 7"/>
+              </svg>
+            </a>
+          } @else {
+            <div></div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+} @else {
+  <!-- Not found -->
+  <div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-slate-50 via-white to-indigo-50">
+    <div class="text-6xl font-extrabold text-slate-200 mb-4">404</div>
+    <p class="text-lg text-slate-500 mb-6">Certificate not found</p>
+    <a routerLink="/" [queryParams]="{ section: 'certs' }" class="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-200 transition-all hover:bg-indigo-700">
+      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5m7-7l-7 7 7 7"/>
+      </svg>
+      Back to Portfolio
+    </a>
+  </div>
+}
+</div>
