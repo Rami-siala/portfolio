@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="utf-8">
-  <title>Redirecting...</title>
+  <title>Portfolio</title>
   <script>
-    // GitHub Pages SPA redirect
-    // Encodes the current path + query into a query parameter on index.html
-    // so the SPA can restore the correct route on load.
-    var pathSegmentsToKeep = 1; // 0 for username.github.io, 1 for project pages (username.github.io/repo)
+    var pathSegmentsToKeep = 1;
     var l = window.location;
     l.replace(
       l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
